@@ -23,12 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# Node.js
-node_modules/
-.env
-.env.local
-dist/
-build/
+
 
 # Logovi
 npm-debug.log*
