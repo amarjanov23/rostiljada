@@ -1,144 +1,145 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
-const games = [
-  "Nogomet",
-  "Odbojka",
-  "Povlačenje konopa",
-  "Beer pong",
-];
+const App = () => {
+    const [sport, setSport] = useState('');
+    const [nazivTima, setNazivTima] = useState('');
+    const [odgovornaOsoba, setOdgovornaOsoba] = useState('');
+    const [clanovi, setClanovi] = useState([]);
+    const [responseMessage, setResponseMessage] = useState('');
+    const [registeredData, setRegisteredData] = useState(null);
 
-function App() {
-  const [game, setGame] = useState('');
-  const [teamName, setTeamName] = useState('');
-  const [captain, setCaptain] = useState('');
-  const [members, setMembers] = useState(['']);
-  const [message, setMessage] = useState('');
-
-  const handleAddMember = () => {
-    setMembers([...members, '']);
-  };
-
-  const handleMemberChange = (index, value) => {
-    const newMembers = [...members];
-    newMembers[index] = value;
-    setMembers(newMembers);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    const payload = {
-      game: 'CS:GO',
-      teamName: 'TeamExample',
-      captain: 'John Doe',
-      members: ['Alice', 'Bob', 'Charlie']
+    const sports = {
+        "Nogomet": 5,
+        "Košarka": 4,
+        "Odbojka": 6,
     };
-  
-    try {
-      const response = await fetch('http://localhost:5001/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
-      });
-  
-      const data = await response.json();
-      console.log('Odgovor sa servera:', data);
-    } catch (error) {
-      console.error('Greška pri slanju zahtjeva:', error);
-    }
-  };
-  
-  
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-white p-6">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-lg">
-        <h1 className="text-4xl font-bold text-center text-blue-600 mb-8">
-          Prijava na Igre
-        </h1>
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:5001/api/register', {
+                sport,
+                nazivTima,
+                odgovornaOsoba,
+                clanovi,
+            });
+            setResponseMessage(response.data.message);
+            setRegisteredData({
+                sport,
+                nazivTima,
+                odgovornaOsoba,
+                clanovi,
+            });
+        } catch (error) {
+            alert("Došlo je do greške.");
+        }
+    };
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Igra */}
-          <div>
-            <label className="block mb-2 font-semibold text-blue-800">Odaberi igru:</label>
-            <select
-              value={game}
-              onChange={(e) => setGame(e.target.value)}
-              className="w-full border-2 border-blue-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              <option value="">-- Odaberi --</option>
-              {games.map((g) => (
-                <option key={g} value={g}>{g}</option>
-              ))}
-            </select>
-          </div>
+    const handleAddMember = () => {
+        if (clanovi.length < (sports[sport] || 0)) {
+            setClanovi([...clanovi, '']);
+        } else {
+            alert('Broj članova je dostigao maksimalni broj!');
+        }
+    };
 
-          {/* Naziv tima */}
-          <div>
-            <label className="block mb-2 font-semibold text-blue-800">Naziv tima:</label>
-            <input
-              type="text"
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-              className="w-full border-2 border-blue-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Unesi naziv tima"
-            />
-          </div>
+    const handleMemberChange = (index, event) => {
+        const newMembers = [...clanovi];
+        newMembers[index] = event.target.value;
+        setClanovi(newMembers);
+    };
 
-          {/* Kapetan */}
-          <div>
-            <label className="block mb-2 font-semibold text-blue-800">Ime kapetana:</label>
-            <input
-              type="text"
-              value={captain}
-              onChange={(e) => setCaptain(e.target.value)}
-              className="w-full border-2 border-blue-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Unesi ime kapetana"
-            />
-          </div>
+    return (
+        <div className="flex justify-center items-center min-h-screen bg-blue-100">
+            <div className="w-full max-w-lg p-10 bg-white rounded-3xl shadow-2xl">
+                <h2 className="text-4xl font-bold text-blue-700 mb-10 text-center">Prijava za Aktivnosti</h2>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                        <label className="block text-lg font-semibold text-blue-600 mb-2">Sport</label>
+                        <select
+                            value={sport}
+                            onChange={(e) => setSport(e.target.value)}
+                            className="w-full p-4 rounded-xl bg-blue-50 text-lg text-blue-700 focus:outline-none"
+                        >
+                            <option value="">Odaberi sport</option>
+                            {Object.keys(sports).map((sportName) => (
+                                <option key={sportName} value={sportName}>{sportName}</option>
+                            ))}
+                        </select>
+                    </div>
 
-          {/* Članovi */}
-          <div>
-            <label className="block mb-2 font-semibold text-blue-800">Članovi tima:</label>
-            {members.map((member, idx) => (
-              <input
-                key={idx}
-                type="text"
-                value={member}
-                onChange={(e) => handleMemberChange(idx, e.target.value)}
-                className="w-full border-2 border-blue-200 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder={`Član ${idx + 1}`}
-              />
-            ))}
-            <button
-              type="button"
-              onClick={handleAddMember}
-              className="mt-3 block w-full text-blue-600 font-medium hover:underline text-center"
-            >
-              + Dodaj člana
-            </button>
-          </div>
+                    <div>
+                        <label className="block text-lg font-semibold text-blue-600 mb-2">Naziv Tima</label>
+                        <input
+                            type="text"
+                            value={nazivTima}
+                            onChange={(e) => setNazivTima(e.target.value)}
+                            className="w-full p-4 rounded-xl bg-blue-50 text-lg text-blue-700 focus:outline-none"
+                            required
+                        />
+                    </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition duration-200"
-          >
-            Prijavi tim
-          </button>
+                    <div>
+                        <label className="block text-lg font-semibold text-blue-600 mb-2">Odgovorna Osoba (Kapetan)</label>
+                        <input
+                            type="text"
+                            value={odgovornaOsoba}
+                            onChange={(e) => setOdgovornaOsoba(e.target.value)}
+                            className="w-full p-4 rounded-xl bg-blue-50 text-lg text-blue-700 focus:outline-none"
+                            required
+                        />
+                    </div>
 
-          {/* Poruka */}
-          {message && (
-            <div className="mt-6 p-4 text-center rounded-lg bg-blue-100 text-blue-800 font-semibold">
-              {message}
+                    <div>
+                        <label className="block text-lg font-semibold text-blue-600 mb-2">Članovi Tima</label>
+                        {clanovi.map((clan, index) => (
+                            <input
+                                key={index}
+                                type="text"
+                                value={clan}
+                                onChange={(e) => handleMemberChange(index, e)}
+                                className="w-full p-4 rounded-xl bg-blue-50 text-lg text-blue-700 focus:outline-none mb-2"
+                                placeholder={`Član ${index + 1}`}
+                            />
+                        ))}
+                        <button
+                            type="button"
+                            onClick={handleAddMember}
+                            className="w-full p-4 bg-green-500 hover:bg-green-600 text-white text-lg font-bold rounded-xl mt-2"
+                        >
+                            Dodaj člana
+                        </button>
+                    </div>
+
+                    <div className="pt-6">
+                        <button
+                            type="submit"
+                            className="w-full p-4 bg-blue-500 hover:bg-blue-600 text-white text-lg font-bold rounded-xl transition"
+                        >
+                            Prijavi Tim
+                        </button>
+                    </div>
+                </form>
+
+                {responseMessage && (
+                    <div className="mt-4 text-green-600 font-semibold text-center">
+                        {responseMessage}
+                    </div>
+                )}
+
+                {registeredData && (
+                    <div className="mt-4 p-4 bg-gray-100 rounded-xl">
+                        <h3 className="text-2xl font-semibold text-blue-600">Podaci Tima</h3>
+                        <p><strong>Sport:</strong> {registeredData.sport}</p>
+                        <p><strong>Naziv Tima:</strong> {registeredData.nazivTima}</p>
+                        <p><strong>Kapiten:</strong> {registeredData.odgovornaOsoba}</p>
+                        <p><strong>Članovi:</strong> {registeredData.clanovi.join(', ')}</p>
+                    </div>
+                )}
             </div>
-          )}
-        </form>
-      </div>
-    </div>
-  );
-}
+        </div>
+    );
+};
 
 export default App;
