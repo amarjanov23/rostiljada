@@ -1,71 +1,42 @@
+const mongoose = require('mongoose');
 const express = require('express');
-const bodyParser = require('body-parser');
-const fs = require('fs');
-const path = require('path');
-
+const cors = require('cors');
 const app = express();
 const PORT = 5001;
 
-// Middleware za parsiranje JSON tijela
-app.use(bodyParser.json());
+// Povezivanje s MongoDB
+mongoose.connect('mongodb://localhost:27017/teams', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Povezan na MongoDB"))
+  .catch(err => console.log("Greška pri povezivanju s MongoDB:", err));
 
-// Putanja do JSON datoteke u kojoj će se pohranjivati timovi
-const teamsFilePath = path.join(__dirname, '../frontend/src/data/teams.json');
-
-// POST ruta za registraciju tima (spremanje u JSON)
-app.post('/api/register', (req, res) => {
-    const { sport, nazivTima, odgovornaOsoba, clanovi } = req.body;
-
-    // Učitavanje trenutnih podataka iz JSON datoteke
-    fs.readFile(teamsFilePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Greška pri čitanju datoteke:', err);
-            return res.status(500).send({ message: 'Greška pri pohrani podataka.' });
-        }
-
-        // Parsiramo postojeće podatke
-        let teams = [];
-        if (data) {
-            teams = JSON.parse(data);
-        }
-
-        // Dodajemo novi tim
-        const newTeam = {
-            sport,
-            nazivTima,
-            odgovornaOsoba,
-            clanovi,
-        };
-
-        teams.push(newTeam);
-
-        // Spremanje ažuriranih podataka u JSON datoteku
-        fs.writeFile(teamsFilePath, JSON.stringify(teams, null, 2), (err) => {
-            if (err) {
-                console.error('Greška pri spremanju podataka:', err);
-                return res.status(500).send({ message: 'Greška pri pohrani podataka.' });
-            }
-            res.status(200).send({ message: 'Tim je uspješno registriran!' });
-        });
-    });
+// Definiraj model tima
+const teamSchema = new mongoose.Schema({
+  sport: String,
+  nazivTima: String,
+  odgovornaOsoba: String,
+  clanovi: [String],
 });
 
-// GET ruta za dohvat svih timova
-app.get('/api/teams', (req, res) => {
-    // Učitavanje podataka iz JSON datoteke
-    fs.readFile(teamsFilePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Greška pri čitanju datoteke:', err);
-            return res.status(500).send({ message: 'Greška pri dohvaćanju podataka.' });
-        }
+const Team = mongoose.model('Team', teamSchema);
 
-        // Šaljemo podatke na frontend
-        const teams = data ? JSON.parse(data) : [];
-        res.status(200).json(teams);
-    });
+app.use(cors());
+app.use(express.json());
+
+// Ruta za registraciju tima
+app.post('/api/register', async (req, res) => {
+  const { sport, nazivTima, odgovornaOsoba, clanovi } = req.body;
+
+  const newTeam = new Team({ sport, nazivTima, odgovornaOsoba, clanovi });
+  await newTeam.save();
+  res.status(200).json({ message: 'Registracija uspješna!' });
 });
 
-// Pokretanje servera
+// Ruta za dohvat svih timova
+app.get('/api/teams', async (req, res) => {
+  const teams = await Team.find();
+  res.json(teams);
+});
+
 app.listen(PORT, () => {
-    console.log(`Server je pokrenut na portu ${PORT}`);
+  console.log(`Server pokrenut na http://localhost:${PORT}`);
 });
