@@ -12,6 +12,7 @@ const App = () => {
     "Nogomet": 5,
     "Košarka": 4,
     "Odbojka": 6,
+    "Bear Pong": 6
   };
 
   const navigate = useNavigate();
