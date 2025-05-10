@@ -20,12 +20,13 @@ const App = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5001/api/register', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/register`, {
         sport,
         nazivTima,
         odgovornaOsoba,
         clanovi,
       });
+      
   
       navigate('/success', {
         state: {
