@@ -10,7 +10,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/api': 'https://rostiljada-server.onrender.com/',  // Proxy API zahtjeva prema backendu
+      '/api': 'http://localhost:5001',  // Proxy API zahtjeva prema backendu
     },
   },
 });

@@ -8,7 +8,10 @@ const app = express();
 
 // Middleware
 app.use(express.json()); // To parse incoming JSON requests
-app.use(cors()); // Enable CORS for all origins (you can limit it to specific origins if needed)
+app.use(cors({
+  origin: 'https://rostiljada-frontend.vercel.app'
+}));
+
 
 // MongoDB URI from the .env file
 const uri = process.env.MONGO_URI;
