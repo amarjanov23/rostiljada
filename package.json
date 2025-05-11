@@ -18,9 +18,5 @@
   "bugs": {
     "url": "https://github.com/amarjanov23/rostiljada/issues"
   },
-  "homepage": "https://github.com/amarjanov23/rostiljada#readme",
-  "devDependencies": {
-    "concurrently": "^9.1.2",
-    "vite": "^6.3.5"
-  }
+  "homepage": "https://github.com/amarjanov23/rostiljada#readme"
 }
