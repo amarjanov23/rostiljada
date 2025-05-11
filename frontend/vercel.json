@@ -1,11 +1,8 @@
 {
-  "builds": [
+  "routes": [
     {
-      "src": "vite.config.ts",
-      "use": "@vercel/node"
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
