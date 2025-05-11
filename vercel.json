@@ -6,12 +6,8 @@
         "use": "@vercel/static-build"
       }
     ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/frontend/dist/$1"
-      }
-    ],
+    "installCommand": "npm install --include=dev",
+    "buildCommand": "npm run build",
     "outputDirectory": "frontend/dist"
   }
   
