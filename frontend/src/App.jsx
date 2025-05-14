@@ -20,7 +20,7 @@ const App = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, {
+      await axios.post(`/api/register`, {
         sport,
         nazivTima,
         odgovornaOsoba,
