@@ -23,7 +23,7 @@ const App = () => {
 
     event.preventDefault();
     try {
-      await axios.post(`${baseURL}/api/register`, {
+      await axios.post(`https://rostiljada-server.onrender.com/api/register`, {
         sport,
         nazivTima,
         odgovornaOsoba,

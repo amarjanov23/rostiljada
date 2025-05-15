@@ -12,7 +12,7 @@ app.use(express.json());
 // Dinamički CORS: dozvoli lokalni i produkcijski origin iz env varijabli
 const allowedOrigins = [
   process.env.FRONTEND_URL_LOCAL || 'http://localhost:5173',
-  process.env.FRONTEND_URL_PROD || 'https://rostiljada-frontend.vercel.app'
+  process.env.FRONTEND_URL_PROD || 'https://rostiljada-frontend.vercel.app', 'https://rostiljada-frontend.vercel.app/api/register'
 ];
 
 app.use(cors({
