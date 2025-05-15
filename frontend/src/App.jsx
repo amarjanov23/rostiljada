@@ -8,29 +8,56 @@ const App = () => {
   const [odgovornaOsoba, setOdgovornaOsoba] = useState('');
   const [clanovi, setClanovi] = useState([]);
 
-  const sports = {
-    "Nogomet": 5,
-    "Košarka": 4,
-    "Odbojka": 6,
-    "Bear Pong": 6
-  };
-
   const navigate = useNavigate();
 
+  const sportsData = {
+    "Prvi dan – Studentski dom": {
+      "Stolni tenis": { maxClanovi: 2, voditelj: "??" },
+      "Stolni nogomet": { maxClanovi: 2, voditelj: "??" },
+      "Turnir u beli": { maxClanovi: 2, voditelj: "Lorna Zbodulja" },
+      "Turnir u trešeti": { maxClanovi: 2, voditelj: "Ivan Račan" },
+      "Alias": { maxClanovi: 4, voditelj: "Lorna Zbodulja" },
+      "Bench Press i biceps curl": { maxClanovi: 2, voditelj: "Niko Rastija, Matea Kucljak" },
+      "Alka": { maxClanovi: 2, voditelj: "Adam Marjanović" },
+      "Košarka": { maxClanovi: 4, voditelj: "Nimaj Dupanović" },
+      "Beer pong": { maxClanovi: 2, voditelj: "Larija Jukić" },
+      "Cageball": { maxClanovi: 5, voditelj: "Elizabeta Rengel" },
+      "Teqball": { maxClanovi: 2, voditelj: "Matej Gurdon-Beta" },
+      "Vukodlaci": { maxClanovi: 6, voditelj: "Elizabeta Rengel" },
+    },
+    "Drugi dan – Gradsko kupalište Drava": {
+      "Odbojka": { maxClanovi: 6, voditelj: "Manuel Mathis" },
+      "Disk golf": { maxClanovi: 1, voditelj: "??" },
+      "Povlačenje užeta": { maxClanovi: 6, voditelj: "Luka Krznarić" },
+      "Gađanje limenki s vodenim balonima": { maxClanovi: 3, voditelj: "??" },
+      "Treasure hunt": { maxClanovi: 4, voditelj: "Manuel Mathis" },
+      "Obaranje ruku": { maxClanovi: 2, voditelj: "Luka Krznarić" },
+    }
+  };
+
+  // Flat sports map for easy access
+  const flatSports = Object.entries(sportsData).flatMap(([_, sports]) => Object.entries(sports));
 
   const handleSubmit = async (event) => {
-    const baseURL = import.meta.env.VITE_API_BASE_URL;
-
     event.preventDefault();
+
+    // Validacija članova
+    const prazniClanovi = clanovi.filter(clan => !clan.trim());
+    if (prazniClanovi.length > 0) {
+      alert("Sva imena članova moraju biti popunjena.");
+      return;
+    }
+
     try {
-      await axios.post(`https://rostiljada-server.onrender.com/api/register`, {
+      const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+      await axios.post(`${baseURL}/api/register`, {
         sport,
         nazivTima,
         odgovornaOsoba,
         clanovi,
       });
-      
-  
+
       navigate('/success', {
         state: {
           sport,
@@ -40,16 +67,19 @@ const App = () => {
         },
       });
     } catch (error) {
-      alert("Došlo je do greške.");
+      console.error('Greška pri registraciji:', error);
+      alert('Došlo je do greške prilikom registracije.');
     }
   };
-  
 
   const handleAddMember = () => {
-    if (clanovi.length < (sports[sport] || 0)) {
+    const selectedSport = flatSports.find(([name]) => name === sport);
+    const max = selectedSport?.[1].maxClanovi || 0;
+
+    if (clanovi.length < max) {
       setClanovi([...clanovi, '']);
     } else {
-      alert('Broj članova je dostigao maksimalni broj!');
+      alert(`Maksimalan broj članova za "${sport}" je ${max}.`);
     }
   };
 
@@ -58,6 +88,8 @@ const App = () => {
     newMembers[index] = event.target.value;
     setClanovi(newMembers);
   };
+
+  const selectedSportData = flatSports.find(([name]) => name === sport)?.[1];
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-blue-100">
@@ -68,15 +100,30 @@ const App = () => {
             <label className="block text-lg font-semibold text-blue-600 mb-2">Sport</label>
             <select
               value={sport}
-              onChange={(e) => setSport(e.target.value)}
-              className="w-full p-4 rounded-xl bg-blue-50 text-lg text-blue-700 focus:outline-none"
+              onChange={(e) => {
+                setSport(e.target.value);
+                setClanovi([]);
+              }}
+              className="w-full p-4 rounded-xl bg-blue-50 text-lg text-blue-700 focus:outline-none cursor-pointer"
               required
             >
               <option value="">Odaberi sport</option>
-              {Object.keys(sports).map((sportName) => (
-                <option key={sportName} value={sportName}>{sportName}</option>
+              {Object.entries(sportsData).map(([dayGroup, sports]) => (
+                <optgroup key={dayGroup} label={dayGroup}>
+                  {Object.keys(sports).map(sportName => (
+                    <option key={sportName} value={sportName}>
+                      {sportName}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
+            {selectedSportData && (
+              <div className="mt-2 text-sm text-blue-600">
+                <p>Maks. broj članova: {selectedSportData.maxClanovi}</p>
+                <p>Organizator: {selectedSportData.voditelj}</p>
+              </div>
+            )}
           </div>
 
           <div>
@@ -91,7 +138,7 @@ const App = () => {
           </div>
 
           <div>
-            <label className="block text-lg font-semibold text-blue-600 mb-2">Odgovorna Osoba (Kapetan)</label>
+            <label className="block text-lg font-semibold text-blue-600 mb-2">Kontakt</label>
             <input
               type="text"
               value={odgovornaOsoba}
@@ -117,7 +164,7 @@ const App = () => {
             <button
               type="button"
               onClick={handleAddMember}
-              className="w-full p-4 bg-green-500 hover:bg-green-600 text-white text-lg font-bold rounded-xl mt-2"
+              className="w-full p-4 bg-green-500 hover:bg-green-600 text-white text-lg font-bold rounded-xl mt-2 cursor-pointer"
             >
               Dodaj člana
             </button>
@@ -126,7 +173,7 @@ const App = () => {
           <div className="pt-6">
             <button
               type="submit"
-              className="w-full p-4 bg-blue-500 hover:bg-blue-600 text-white text-lg font-bold rounded-xl transition"
+              className="w-full p-4 bg-blue-500 hover:bg-blue-600 text-white text-lg font-bold rounded-xl transition cursor-pointer"
             >
               Prijavi Tim
             </button>
