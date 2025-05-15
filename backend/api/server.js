@@ -10,10 +10,19 @@ const app = express();
 app.use(express.json());
 
 // Dinamički CORS: dozvoli lokalni
+const allowedOrigins = ['https://rostiljada.vercel.app', 'http://localhost:5173'];
+
 app.use(cors({
-  origin: 'https://rostiljada.vercel.app',  // Dozvoli samo ovu frontend domenu
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Metode koje dozvoljavaš
-  credentials: true,  // Ako koristiš cookie-je ili autorizaciju
+  origin: function(origin, callback) {
+    // ako je origin undefined (npr. curl ili postman), dopusti
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,  // ako koristiš cookie-je / auth
 }));
 
 // Povezivanje na MongoDB iz .env
