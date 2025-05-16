@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+
+
 
 const App = () => {
   const [sport, setSport] = useState('');
@@ -92,9 +95,14 @@ const App = () => {
   const selectedSportData = flatSports.find(([name]) => name === sport)?.[1];
 
   return (
+    
     <div className="flex justify-center items-center min-h-screen bg-blue-100">
       <div className="w-full max-w-lg p-10 bg-white rounded-3xl shadow-2xl">
         <h2 className="text-4xl font-bold text-blue-700 mb-10 text-center">Prijava za Aktivnosti</h2>
+        <>
+      {/* Ostali sadržaji aplikacije */}
+      <SpeedInsights />
+    </>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-lg font-semibold text-blue-600 mb-2">Sport</label>
@@ -181,6 +189,7 @@ const App = () => {
         </form>
       </div>
     </div>
+    
   );
 };
 

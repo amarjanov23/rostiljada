@@ -11,7 +11,7 @@ const SECRET_KEY = process.env.JWT_SECRET;
 app.use(express.json());
 
 // CORS konfiguracija
-const allowedOrigins = ['https://rostiljada.vercel.app', 'http://localhost:5173'];
+const allowedOrigins = ['https://rostiljada.vercel.app', 'http://localhost:5173', 'https://www.rostiljada-szv.online'];
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
