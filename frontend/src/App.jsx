@@ -8,7 +8,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 const App = () => {
   const [sport, setSport] = useState('');
   const [nazivTima, setNazivTima] = useState('');
-  const [odgovornaOsoba, setOdgovornaOsoba] = useState('');
+  const [kontakt, setKontakt] = useState('');
   const [clanovi, setClanovi] = useState([]);
 
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ const App = () => {
       await axios.post(`${baseURL}/api/register`, {
         sport,
         nazivTima,
-        odgovornaOsoba,
+        kontakt,
         clanovi,
       });
 
@@ -65,7 +65,7 @@ const App = () => {
         state: {
           sport,
           nazivTima,
-          odgovornaOsoba,
+          kontakt,
           clanovi,
         },
       });
@@ -149,8 +149,8 @@ const App = () => {
             <label className="block text-lg font-semibold text-blue-600 mb-2">Kontakt</label>
             <input
               type="text"
-              value={odgovornaOsoba}
-              onChange={(e) => setOdgovornaOsoba(e.target.value)}
+              value={kontakt}
+              onChange={(e) => setKontakt(e.target.value)}
               className="w-full p-4 rounded-xl bg-blue-50 text-lg text-blue-700 focus:outline-none"
               required
             />

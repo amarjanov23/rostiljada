@@ -61,11 +61,11 @@ export default function AdminDashboard() {
 
   const exportCSV = () => {
     const rows = [
-      ['Sport', 'Naziv Tima', 'Kapetan', 'Članovi'],
+      ['Sport', 'Naziv Tima', 'Kontakt', 'Članovi'],
       ...teams.map(t => [
         escapeCSV(t.sport),
         escapeCSV(t.nazivTima),
-        escapeCSV(t.odgovornaOsoba),
+        escapeCSV(t.kontakt),
         escapeCSV(t.clanovi.join(', ')),
       ]),
     ];
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
                   key={team._id}
                   className="p-4 bg-blue-50 rounded-lg border border-blue-200"
                 >
-                  <strong className="text-blue-800">{team.nazivTima}</strong> – Kapetan: {team.odgovornaOsoba}
+                  <strong className="text-blue-800">{team.nazivTima}</strong> – Kontakt: {team.kontakt}
                   <br />
                   Članovi: {team.clanovi.join(', ')}
                   <div className="mt-2">
@@ -175,7 +175,7 @@ export default function AdminDashboard() {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium">Kapetan</label>
+          <label className="block text-sm font-medium">Kontakt</label>
           <input
             type="text"
             value={editingTeam.odgovornaOsoba}
