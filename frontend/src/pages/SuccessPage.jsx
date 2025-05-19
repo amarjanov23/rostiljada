@@ -37,8 +37,8 @@ const SuccessPage = () => {
             <span>{state.nazivTima}</span>
           </div>
           <div className="flex justify-between">
-            <span className="font-semibold">Kontakt:</span>
-            <span>{state.kontakt}</span>
+            <span className="font-semibold"> Kontakts:</span>
+            <span>{state.odgovornaOsoba}</span>
           </div>
           <div>
             <span className="font-semibold">Članovi:</span>

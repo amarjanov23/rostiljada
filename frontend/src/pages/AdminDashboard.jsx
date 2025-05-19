@@ -65,7 +65,7 @@ export default function AdminDashboard() {
       ...teams.map(t => [
         escapeCSV(t.sport),
         escapeCSV(t.nazivTima),
-        escapeCSV(t.kontakt),
+        escapeCSV(t.odgovornaOsoba),
         escapeCSV(t.clanovi.join(', ')),
       ]),
     ];
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
                   key={team._id}
                   className="p-4 bg-blue-50 rounded-lg border border-blue-200"
                 >
-                  <strong className="text-blue-800">{team.nazivTima}</strong> – Kontakt: {team.kontakt}
+                  <strong className="text-blue-800">{team.nazivTima}</strong> – Kontakt: {team.odgovornaOsoba}
                   <br />
                   Članovi: {team.clanovi.join(', ')}
                   <div className="mt-2">
