@@ -10,6 +10,7 @@ const App = () => {
     const [nazivTima, setNazivTima] = useState('');
     const [odgovornaOsoba, setOdgovornaOsoba] = useState('');
     const [clanovi, setClanovi] = useState([]);
+    const [showModal, setShowModal] = useState(false);
 
     const [introVisible, setIntroVisible] = useState(true);
     const [introFadeOut, setIntroFadeOut] = useState(false);
@@ -26,28 +27,101 @@ const App = () => {
 
     const sportsData = {
         "Prvi dan – Studentski dom": {
-            "Stolni tenis": { maxClanovi: 2, voditelj: "??" },
-            "Stolni nogomet": { maxClanovi: 2, voditelj: "??" },
-            "Turnir u beli": { maxClanovi: 2, voditelj: "Lorna Zbodulja" },
-            "Turnir u trešeti": { maxClanovi: 2, voditelj: "Ivan Račan" },
-            "Alias": { maxClanovi: 4, voditelj: "Lorna Zbodulja" },
-            "Bench Press i biceps curl": { maxClanovi: 2, voditelj: "Niko Rastija, Matea Kucljak" },
-            "Alka": { maxClanovi: 2, voditelj: "Adam Marjanović" },
-            "Košarka": { maxClanovi: 4, voditelj: "Nimaj Dupanović" },
-            "Beer pong": { maxClanovi: 2, voditelj: "Larija Jukić" },
-            "Cageball": { maxClanovi: 5, voditelj: "Elizabeta Rengel" },
-            "Teqball": { maxClanovi: 2, voditelj: "Matej Gurdon-Beta" },
-            "Vukodlaci": { maxClanovi: 6, voditelj: "Elizabeta Rengel" },
+            "Stolni tenis": {
+                maxClanovi: 2,
+                voditelj: "??",
+                opis: "Brze mečeve 1-na-1 na stolnoteniskom stolu. Potrebna preciznost i refleksi."
+            },
+            "Stolni nogomet": {
+                maxClanovi: 2,
+                voditelj: "??",
+                opis: "Turnir u popularnoj društvenoj igri. Svaki tim ima 2 igrača."
+            },
+            "Turnir u beli": {
+                maxClanovi: 2,
+                voditelj: "Lorna Zbodulja",
+                opis: "Natjecanje u kartaškoj igri Belot. Igra se u parovima."
+            },
+            "Turnir u trešeti": {
+                maxClanovi: 2,
+                voditelj: "Ivan Račan",
+                opis: "Kartaški turnir u klasičnoj dalmatinskoj igri — trešeta. Igra se u parovima."
+            },
+            "Alias": {
+                maxClanovi: 4,
+                voditelj: "Lorna Zbodulja",
+                opis: "Zabavna igra pogađanja riječi. Igra se timski, komunikacija ključna!"
+            },
+            "Bench Press i biceps curl": {
+                maxClanovi: 2,
+                voditelj: "Niko Rastija, Matea Kucljak",
+                opis: "Natjecanje u snazi — tko podigne više u benchu i biceps curlu."
+            },
+            "Alka": {
+                maxClanovi: 2,
+                voditelj: "Adam Marjanović",
+                opis: "Rekreacija Sinjske alke s modernim twistom. Preciznost je ključna."
+            },
+            "Košarka": {
+                maxClanovi: 4,
+                voditelj: "Nimaj Dupanović",
+                opis: "Klasična 3-na-3 košarka. Timovi se natječu u brzoj eliminaciji. Vrijedi fair-play!"
+            },
+            "Beer pong": {
+                maxClanovi: 2,
+                voditelj: "Larija Jukić",
+                opis: "Zabavno natjecanje preciznosti i taktike. Igra se s čašama i lopticama."
+            },
+            "Cageball": {
+                maxClanovi: 5,
+                voditelj: "Elizabeta Rengel",
+                opis: "Mali nogomet u kavezu – brza igra bez izbacivanja lopte!"
+            },
+            "Teqball": {
+                maxClanovi: 2,
+                voditelj: "Matej Gurdon-Beta",
+                opis: "Tehnička igra na zakrivljenom stolu. Kombinacija nogometa i stolnog tenisa."
+            },
+            "Vukodlaci": {
+                maxClanovi: 6,
+                voditelj: "Elizabeta Rengel",
+                opis: "Društvena igra u kojoj logika i intuicija odlučuju. Tko je vukodlak među nama?"
+            }
         },
         "Drugi dan – Gradsko kupalište Drava": {
-            "Odbojka": { maxClanovi: 6, voditelj: "Manuel Mathis" },
-            "Disk golf": { maxClanovi: 1, voditelj: "??" },
-            "Povlačenje užeta": { maxClanovi: 6, voditelj: "Luka Krznarić" },
-            "Gađanje limenki s vodenim balonima": { maxClanovi: 3, voditelj: "??" },
-            "Treasure hunt": { maxClanovi: 4, voditelj: "Manuel Mathis" },
-            "Obaranje ruku": { maxClanovi: 2, voditelj: "Luka Krznarić" },
-        },
+            "Odbojka": {
+                maxClanovi: 6,
+                voditelj: "Manuel Mathis",
+                opis: "Klasična odbojka na pijesku. Timska igra, zabava i natjecanje!"
+            },
+            "Disk golf": {
+                maxClanovi: 1,
+                voditelj: "??",
+                opis: "Igra slična golfu, ali se koristi frizbi. Cilj: pogoditi metu s što manje bacanja."
+            },
+            "Povlačenje užeta": {
+                maxClanovi: 6,
+                voditelj: "Luka Krznarić",
+                opis: "Snaga i koordinacija tima odlučuju tko će prevući protivnika!"
+            },
+            "Gađanje limenki s vodenim balonima": {
+                maxClanovi: 3,
+                voditelj: "??",
+                opis: "Zabavno gađanje limenki pomoću balona napunjenih vodom. Prskanje zagarantirano!"
+            },
+            "Treasure hunt": {
+                maxClanovi: 4,
+                voditelj: "Manuel Mathis",
+                opis: "Avanturistička potraga po terenu. Snalažljivost i suradnja ključne su!"
+            },
+            "Obaranje ruku": {
+                maxClanovi: 2,
+                voditelj: "Luka Krznarić",
+                opis: "Klasično natjecanje snage 1-na-1. Tko će srušiti protivnika?"
+            }
+        }
     };
+
 
     const themes = {
         "Prvi dan – Studentski dom": {
@@ -187,6 +261,44 @@ const App = () => {
                                     )}
                                 </div>
                             )}
+
+                            {selectedSportData && (
+                                <button
+                                    type="button"
+                                    onClick={() => setShowModal(true)}
+                                    className="mt-2 underline text-theme font-medium"
+                                >
+                                    Više informacija
+                                </button>
+                            )}
+                            {showModal && selectedSportData && (
+                                <div
+                                    className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50"
+                                    onClick={() => setShowModal(false)} // Klik na overlay zatvara modal
+                                >
+                                    <div
+                                        className="bg-white rounded-xl p-6 max-w-md shadow-xl relative"
+                                        onClick={(e) => e.stopPropagation()} // Klik unutar modala ne zatvara modal
+                                    >
+                                        {/* X dugme za zatvaranje, pozicionirano u gornjem desnom uglu */}
+                                        <button
+                                            className="absolute top-3 right-3 text-black text-xl font-bold hover:text-gray-700 cursor-pointer"
+                                            onClick={() => setShowModal(false)}
+                                            aria-label="Zatvori modal"
+                                        >
+                                            &times;
+                                        </button>
+
+                                        <h2 className="text-xl font-bold mb-2">{sport}</h2>
+                                        <p className="text-sm text-gray-700 mb-2"><strong>Organizator:</strong> {selectedSportData.voditelj}</p>
+                                        <p className="text-sm text-gray-700 mb-2"><strong>Maks. članova:</strong> {selectedSportData.maxClanovi}</p>
+                                        {selectedSportData.opis && (
+                                            <p className="text-sm text-gray-600">{selectedSportData.opis}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+
 
                             <div>
                                 <label className={`block text-lg font-semibold mb-2 ${theme.label}`}>Naziv Tima</label>
