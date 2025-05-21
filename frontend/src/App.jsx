@@ -179,7 +179,7 @@ const App = ({ logo }) => {
                 type="button"
                 onClick={prevStep}
                 style={theme.button}
-                className="rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
+                className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
               >
                 Natrag
               </button>
@@ -198,9 +198,10 @@ const App = ({ logo }) => {
 
             {step === 3 && (
               <button
+                
                 type="submit"
                 style={{ ...theme.button, marginLeft: "auto" }}
-                className="rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
+                className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
               >
                 Prijavi Tim
               </button>

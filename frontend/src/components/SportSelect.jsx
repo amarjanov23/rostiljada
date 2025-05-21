@@ -1,24 +1,40 @@
-const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, selectedSportData, setShowModal, theme }) => {
-  // Sports for selected day (može biti undefined ako selectedDay nije validan ključ)
+const SportSelect = ({
+  selectedDay,
+  sport,
+  setSport,
+  setClanovi,
+  sportsData,
+  theme
+}) => {
   const sportsForDay = sportsData?.[selectedDay] || {};
 
-  console.log('selectedDay:', selectedDay);
-  console.log('sportsForDay:', sportsForDay);
-
   return (
-    <div>
-      <label>Odaberi sport:</label>
+    <div
+      style={{ backgroundColor: theme.cardBg, color: theme.label.color }}
+      className="p-6 space-y-4 transition-colors duration-500"
+    >
+      <label className="block text-lg font-semibold tracking-wide">
+        Odaberi sport:
+      </label>
+
       <select
         value={sport}
         onChange={(e) => {
           setSport(e.target.value);
           setClanovi([]);
         }}
+        className="cursor-pointer w-full px-6 py-4 rounded-xl text-base font-semibold focus:outline-none focus:ring-0 focus:border-none transition-all duration-300"
+        style={{
+          backgroundColor: theme.button.backgroundColor,
+          color: theme.button.color,
+          border: 'none',
+          appearance: 'none',
+        }}
       >
-        <option value="">-- Odaberi sport --</option>
-        {Object.entries(sportsForDay).map(([key, value]) => (
+        <option value="" className="text-gray-400">-- Odaberi sport --</option>
+        {Object.entries(sportsForDay).map(([key]) => (
           <option key={key} value={key}>
-            {key} {/* ili value.name ako želiš prikazati ime */}
+            {key}
           </option>
         ))}
       </select>
