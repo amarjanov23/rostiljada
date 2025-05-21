@@ -32,7 +32,7 @@ const SportModal = ({ isOpen, onClose, sport, details }) => {
 
         {/* Sadržaj modala */}
         <h2 className="text-xl font-bold mb-4">{sport}</h2>
-        <p><strong>Maks. članova:</strong> {details.maxClanovi}</p>
+        <p><strong>Maks. članova. :</strong> {details.maxClanovi}</p>
         <p><strong>Voditelj:</strong> {details.voditelj}</p>
         {details.opis && (
           <p className="mt-2 text-sm text-gray-600">{details.opis}</p>
