@@ -8,7 +8,14 @@ const sportsData = {
       maxTimovi: 16,
       opis: "1-na-1 turnir u eliminacijskom format."
     },
-  
+    "Stolni nogomet": {
+      voditelj: "",
+      vrijeme: "",
+      lokacija: "",
+      maxClanovi: 0,
+      maxTimovi: 0,
+      opis: "Slobodna igra, mi izvadimo van pa ko hoće neka igra"
+    },
     "Turnir u beli": {
       voditelj: "Lorna Zbodulja",
       vrijeme: "16:00h-20:00h, nastavak idući dan na Dravi",
@@ -151,4 +158,4 @@ const sportsData = {
   }
 };
 
-export default sportsData;
+module.exports = sportsData;

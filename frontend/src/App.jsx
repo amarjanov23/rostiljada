@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -27,6 +27,7 @@ const App = ({ logo }) => {
   const [showModal, setShowModal] = useState(false);
   const [introVisible, setIntroVisible] = useState(true);
   const [introFadeOut, setIntroFadeOut] = useState(false);
+  const [brojPrijava, setBrojPrijava] = useState(0);
 
   const navigate = useNavigate();
 
@@ -46,15 +47,39 @@ const App = ({ logo }) => {
     setSelectedDay(day);
     setSport('');
     setClanovi([]);
+    setNazivTima('');
+    setOdgovornaOsoba('');
+    setBrojPrijava(0); // resetiraj broj prijava kad se promijeni dan
   };
 
   const nextStep = () => setStep((s) => Math.min(s + 1, 3));
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
 
+  // Dohvati broj prijava svaki put kad se promijeni sport ili dan
+  useEffect(() => {
+    const fetchBrojPrijava = async () => {
+      if (selectedDay && sport) {
+        try {
+          const baseURL = import.meta.env.VITE_API_BASE_URL;
+          const res = await axios.get(`${baseURL}/api/teams/count`, {
+            params: { dan: selectedDay, sport },
+          });
+          setBrojPrijava(res.data.count);
+        } catch (error) {
+          console.error("Greška pri dohvatu broja prijava:", error);
+        }
+      } else {
+        setBrojPrijava(0);
+      }
+    };
+
+    fetchBrojPrijava();
+  }, [selectedDay, sport]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!nazivTima || !odgovornaOsoba || clanovi.length === 0) {
+    if (!nazivTima.trim() || !odgovornaOsoba.trim() || clanovi.length === 0) {
       alert("Popuni sva obavezna polja.");
       return;
     }
@@ -64,9 +89,15 @@ const App = ({ logo }) => {
       return;
     }
 
+    // Provjeri limit prije slanja
+    if (brojPrijava >= (selectedSportData?.maxTimovi || Infinity)) {
+      alert("Za ovaj sport su prijave zatvorene.");
+      return;
+    }
+
     try {
       const baseURL = import.meta.env.VITE_API_BASE_URL;
-      await axios.post(`${baseURL}/api/register`, {
+      await axios.post(`${baseURL}/api/teams/register`, {
         dan: selectedDay,
         sport,
         nazivTima,
@@ -95,12 +126,38 @@ const App = ({ logo }) => {
     }
   };
 
+  // IntroOverlay fade out efekt
+  useEffect(() => {
+    if (introVisible) {
+      const timer = setTimeout(() => {
+        setIntroFadeOut(true);
+        setTimeout(() => setIntroVisible(false), 700);
+      }, 1650);
+      return () => clearTimeout(timer);
+    }
+  }, [introVisible]);
+
+  const maxTimovi = selectedSportData?.maxTimovi || Infinity;
+  const prijaveZatvorene = brojPrijava >= maxTimovi;
+
+  // Validacija za dugme Dalje
+  const canGoNextStep =
+    (step === 1 && selectedDay) ||
+    (step === 2 && sport) ||
+    step === 3;
+
+  // Validacija forme na koraku 3
+  const isTeamFormValid =
+    nazivTima.trim() !== "" &&
+    odgovornaOsoba.trim() !== "" &&
+    clanovi.length > 0 &&
+    clanovi.every((clan) => clan.trim() !== "");
+
   return (
     <div
       style={{ backgroundColor: theme.bg, color: theme.label.color }}
       className="flex flex-col items-center min-h-screen p-6 transition-colors duration-500"
     >
-      {/* Intro Overlay */}
       {introVisible && (
         <IntroOverlay
           logo={logo}
@@ -108,12 +165,11 @@ const App = ({ logo }) => {
           fadeOut={introFadeOut}
           onClick={() => {
             setIntroFadeOut(true);
-            setTimeout(() => setIntroVisible(false), 700); // Mora odgovarati .duration-700
+            setTimeout(() => setIntroVisible(false), 700);
           }}
         />
       )}
 
-      {/* Header */}
       <header
         style={{ backgroundColor: theme.cardBg }}
         className="w-full max-w-3xl p-10 rounded-3xl shadow-lg mb-8"
@@ -126,7 +182,6 @@ const App = ({ logo }) => {
         </h1>
       </header>
 
-      {/* Main Content */}
       <main
         style={{ backgroundColor: theme.cardBg }}
         className="w-full max-w-3xl p-10 rounded-3xl shadow-lg"
@@ -134,96 +189,91 @@ const App = ({ logo }) => {
         <StepIndicator step={step} theme={theme} />
 
         <form onSubmit={handleSubmit} className="space-y-8">
-  {step === 1 && (
-    <DaySelect
-      selectedDay={selectedDay}
-      setSelectedDay={handleDayChange}
-      setSport={setSport}
-      setClanovi={setClanovi}
-      sportsData={sportsData}
-      theme={theme}
-    />
-  )}
+          {step === 1 && (
+            <DaySelect
+              selectedDay={selectedDay}
+              setSelectedDay={handleDayChange}
+              setSport={setSport}
+              setClanovi={setClanovi}
+              sportsData={sportsData}
+              theme={theme}
+            />
+          )}
 
-  {step === 2 && selectedDay && (
-    <SportSelect
-      selectedDay={selectedDay}
-      sport={sport}
-      setSport={setSport}
-      setClanovi={setClanovi}
-      sportsData={sportsData}
-      selectedSportData={selectedSportData}
-      setShowModal={setShowModal}
-      theme={theme}
-    />
-  )}
+          {step === 2 && selectedDay && (
+            <SportSelect
+              selectedDay={selectedDay}
+              sport={sport}
+              setSport={setSport}
+              setClanovi={setClanovi}
+              sportsData={sportsData}
+              selectedSportData={selectedSportData}
+              setShowModal={setShowModal}
+              theme={theme}
+            />
+          )}
 
-  {step === 3 && selectedSportData && (
-    <TeamForm
-      nazivTima={nazivTima}
-      setNazivTima={setNazivTima}
-      odgovornaOsoba={odgovornaOsoba}
-      setOdgovornaOsoba={setOdgovornaOsoba}
-      clanovi={clanovi}
-      handleMemberChange={handleMemberChange}
-      handleAddMember={handleAddMember}
-      maxClanovi={selectedSportData.maxClanovi}
-      theme={theme}
-    />
-  )}
+          {step === 3 && selectedSportData && (
+            <TeamForm
+              nazivTima={nazivTima}
+              setNazivTima={setNazivTima}
+              odgovornaOsoba={odgovornaOsoba}
+              setOdgovornaOsoba={setOdgovornaOsoba}
+              clanovi={clanovi}
+              handleMemberChange={handleMemberChange}
+              handleAddMember={handleAddMember}
+              maxClanovi={selectedSportData.maxClanovi}
+              theme={theme}
+            />
+          )}
 
-  {/* Navigation Buttons */}
-  <div className="flex justify-between pt-8">
-    {step > 1 && (
-      <button
-        type="button"
-        onClick={prevStep}
-        style={theme.button}
-        className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
-      >
-        Natrag
-      </button>
-    )}
+          <div className="flex justify-between pt-8">
+            {step > 1 && (
+              <button
+                type="button"
+                onClick={prevStep}
+                style={theme.button}
+                className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
+              >
+                Natrag
+              </button>
+            )}
 
-    {step < 3 && (
-      <button
-        type="button"
-        onClick={nextStep}
-        disabled={
-          (step === 1 && !selectedDay) || (step === 2 && !sport)
-        }
-        style={{
-          ...theme.button,
-          marginLeft: "auto",
-          opacity:
-            (step === 1 && !selectedDay) || (step === 2 && !sport)
-              ? 0.5
-              : 1,
-          cursor:
-            (step === 1 && !selectedDay) || (step === 2 && !sport)
-              ? "not-allowed"
-              : "pointer",
-        }}
-        className="rounded-md px-5 py-2 font-semibold shadow-md transition"
-      >
-        Dalje
-      </button>
-    )}
+            {step < 3 && (
+              <button
+                type="button"
+                onClick={nextStep}
+                disabled={!canGoNextStep}
+                style={{
+                  ...theme.button,
+                  marginLeft: "auto",
+                  opacity: !canGoNextStep ? 0.5 : 1,
+                  cursor: !canGoNextStep ? "not-allowed" : "pointer",
+                }}
+                className="rounded-md px-5 py-2 font-semibold shadow-md transition"
+              >
+                Dalje
+              </button>
+            )}
 
-    {step === 3 && (
-      <button
-        type="submit"
-        style={{ ...theme.button, marginLeft: "auto" }}
-        className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
-      >
-        Prijavi Tim
-      </button>
-    )}
-  </div>
-</form>
+            {step === 3 && (
+              <button
+                type="submit"
+                disabled={prijaveZatvorene || !isTeamFormValid}
+                style={{
+                  ...theme.button,
+                  marginLeft: "auto",
+                  opacity: prijaveZatvorene || !isTeamFormValid ? 0.5 : 1,
+                  cursor: prijaveZatvorene || !isTeamFormValid ? "not-allowed" : "pointer",
+                }}
+                className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
+              >
+                {prijaveZatvorene ? "Prijave zatvorene" : "Prijavi Tim"}
+              </button>
+            )}
+          </div>
+        </form>
 
-
-        {/* Modal */}
         {showModal && selectedSportData && (
           <SportModal
             isOpen={showModal}

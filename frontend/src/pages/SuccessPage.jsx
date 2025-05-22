@@ -1,33 +1,71 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
+import {
+  defaultTheme,
+  dan1Theme,
+  dan2Theme,
+} from "../components/themes";
 const SuccessPage = () => {
   const { state } = useLocation();
 
-  if (!state) return (
-    <div className="flex items-center justify-center min-h-screen bg-blue-100">
-      <p className="text-lg text-gray-700">Nema podataka</p>
-    </div>
-  );
+  if (!state) {
+    return (
+      <div
+        className="flex items-center justify-center min-h-screen"
+        style={{ backgroundColor: defaultTheme.bg }}
+      >
+        <p style={{ color: "#4b5563", fontSize: "1.125rem" }}>Nema podataka</p>
+      </div>
+    );
+  }
+
+  // Odaberi temu prema danu
+  let theme;
+  switch (state.dan) {
+    case "Dan 1":
+      theme = dan1Theme;
+      break;
+    case "Dan 2":
+      theme = dan2Theme;
+      break;
+    default:
+      theme = defaultTheme;
+  }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-blue-100 px-4">
-      <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-xl w-full">
+    <div
+      className="flex items-center justify-center min-h-screen px-4"
+      style={{ backgroundColor: theme.bg }}
+    >
+      <div
+        style={{ backgroundColor: theme.cardBg }}
+        className="rounded-3xl shadow-2xl p-10 max-w-xl w-full"
+      >
         <div className="text-center mb-8">
           <svg
-            className="mx-auto mb-4 w-16 h-16 text-green-500"
+            className="mx-auto mb-4 w-16 h-16"
             fill="none"
-            stroke="currentColor"
+            stroke={theme.button.backgroundColor}
             strokeWidth="2"
             viewBox="0 0 24 24"
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
-          <h1 className="text-4xl font-bold text-blue-700">Registracija uspješna!</h1>
-          <p className="text-blue-600 mt-2">Vaš tim je uspješno prijavljen.</p>
+          <h1
+            style={{ color: theme.button.backgroundColor }}
+            className="text-4xl font-bold"
+          >
+            Registracija uspješna!
+          </h1>
+          <p
+            style={{ color: theme.label.color }}
+            className="mt-2"
+          >
+            Vaš tim je uspješno prijavljen.
+          </p>
         </div>
 
-        <div className="space-y-4 text-blue-800">
+        <div style={{ color: theme.label.color }} className="space-y-4">
           <div className="flex justify-between">
             <span className="font-semibold">Sport:</span>
             <span>{state.sport}</span>
@@ -37,12 +75,15 @@ const SuccessPage = () => {
             <span>{state.nazivTima}</span>
           </div>
           <div className="flex justify-between">
-            <span className="font-semibold"> Kontakts:</span>
+            <span className="font-semibold">Kontakts:</span>
             <span>{state.odgovornaOsoba}</span>
           </div>
           <div>
             <span className="font-semibold">Članovi:</span>
-            <ul className="list-disc list-inside mt-2 text-blue-700">
+            <ul
+              className="list-disc list-inside mt-2"
+              style={{ color: theme.button.backgroundColor }}
+            >
               {state.clanovi.map((clan, index) => (
                 <li key={index}>{clan}</li>
               ))}
@@ -53,7 +94,23 @@ const SuccessPage = () => {
         <div className="mt-8 text-center">
           <a
             href="/"
-            className="inline-block px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition duration-200"
+            style={{
+              backgroundColor: theme.button.backgroundColor,
+              color: theme.button.color,
+              borderRadius: "1.5rem",
+              padding: "0.75rem 1.5rem",
+              fontWeight: "600",
+              transition: "background-color 0.2s",
+              display: "inline-block",
+              textDecoration: "none",
+              border: theme.button.border,
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = theme.stepCompleted)
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = theme.button.backgroundColor)
+            }
           >
             Povratak na početnu
           </a>

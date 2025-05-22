@@ -3,15 +3,20 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const Team = require('../models/Team'); // prilagodi putanju do modela
+const teamRoutes = require('../routes/teamRoutes'); // prilagodi putanju ako treba
 
 const app = express();
 const SECRET_KEY = process.env.JWT_SECRET;
 
+// Middleware
 app.use(express.json());
 
 // CORS konfiguracija
-const allowedOrigins = ['https://rostiljada.vercel.app', 'http://localhost:5173', 'https://www.rostiljada-szv.online'];
+const allowedOrigins = [
+  'https://rostiljada.vercel.app',
+  'http://localhost:5173',
+  'https://www.rostiljada-szv.online'
+];
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -20,7 +25,7 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true,
+  credentials: true
 }));
 
 // Middleware za provjeru JWT tokena
@@ -37,7 +42,7 @@ function authenticateToken(req, res, next) {
   });
 }
 
-// Login ruta
+// Login ruta za dobivanje JWT tokena
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
@@ -48,58 +53,13 @@ app.post('/api/login', (req, res) => {
   res.status(401).json({ message: 'Neispravan username ili lozinka' });
 });
 
-// Dohvati sve timove (zaštićena ruta)
-app.get('/api/teams', authenticateToken, async (req, res) => {
-  try {
-    const timovi = await Team.find();
-    res.json(timovi);
-  } catch (err) {
-    res.status(500).json({ message: 'Greška pri dohvatu timova' });
-  }
-});
+// Rute za timove
+// Ovdje možeš zaštititi rutu ako želiš (authenticateToken middleware), npr:
+// app.use('/api/teams', authenticateToken, teamRoutes);
+// ili ostaviti javno dostupno za prijavu i brojanje
+app.use('/api/teams', teamRoutes);
 
-// Registracija novog tima (javni endpoint)
-app.post('/api/register', async (req, res) => {
-  try {
-    const noviTim = new Team(req.body);
-    await noviTim.save();
-    res.status(201).json({ message: 'Tim uspješno dodan' });
-  } catch (err) {
-    res.status(500).json({ message: 'Greška pri dodavanju tima' });
-  }
-});
-
-// Ažuriranje tima s određenim ID-em (zaštićena ruta)
-app.put('/api/teams/:id', authenticateToken, async (req, res) => {
-  const teamId = req.params.id;
-  const updatedData = req.body;
-
-  try {
-    const updatedTeam = await Team.findByIdAndUpdate(teamId, updatedData, { new: true });
-    if (!updatedTeam) {
-      return res.status(404).json({ message: 'Tim nije pronađen' });
-    }
-    res.json(updatedTeam);
-  } catch (err) {
-    res.status(500).json({ message: 'Greška pri ažuriranju tima' });
-  }
-});
-
-// Brisanje tima (zaštićena ruta)
-app.delete('/api/teams/:id', authenticateToken, async (req, res) => {
-  const teamId = req.params.id;
-
-  try {
-    const deletedTeam = await Team.findByIdAndDelete(teamId);
-    if (!deletedTeam) {
-      return res.status(404).json({ message: 'Tim nije pronađen' });
-    }
-    res.json({ message: 'Tim je obrisan' });
-  } catch (err) {
-    res.status(500).json({ message: 'Greška pri brisanju tima' });
-  }
-});
-
+// Pokretanje servera i povezivanje na MongoDB
 const PORT = process.env.PORT || 5001;
 
 mongoose.connect(process.env.MONGO_URI)
@@ -109,4 +69,6 @@ mongoose.connect(process.env.MONGO_URI)
       console.log(`Server radi na portu ${PORT}`);
     });
   })
-  .catch(err => console.error('❌ MongoDB error:', err));
+  .catch(err => {
+    console.error('❌ Greška prilikom povezivanja na MongoDB:', err);
+  });
