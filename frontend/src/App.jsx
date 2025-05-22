@@ -134,80 +134,94 @@ const App = ({ logo }) => {
         <StepIndicator step={step} theme={theme} />
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          {step === 1 && (
-            <DaySelect
-              selectedDay={selectedDay}
-              setSelectedDay={handleDayChange}
-              setSport={setSport}
-              setClanovi={setClanovi}
-              sportsData={sportsData}
-              theme={theme}
-            />
-          )}
+  {step === 1 && (
+    <DaySelect
+      selectedDay={selectedDay}
+      setSelectedDay={handleDayChange}
+      setSport={setSport}
+      setClanovi={setClanovi}
+      sportsData={sportsData}
+      theme={theme}
+    />
+  )}
 
-          {step === 2 && selectedDay && (
-            <SportSelect
-              selectedDay={selectedDay}
-              sport={sport}
-              setSport={setSport}
-              setClanovi={setClanovi}
-              sportsData={sportsData}
-              selectedSportData={selectedSportData}
-              setShowModal={setShowModal}
-              theme={theme}
-            />
-          )}
+  {step === 2 && selectedDay && (
+    <SportSelect
+      selectedDay={selectedDay}
+      sport={sport}
+      setSport={setSport}
+      setClanovi={setClanovi}
+      sportsData={sportsData}
+      selectedSportData={selectedSportData}
+      setShowModal={setShowModal}
+      theme={theme}
+    />
+  )}
 
-          {step === 3 && (
-            <TeamForm
-              nazivTima={nazivTima}
-              setNazivTima={setNazivTima}
-              odgovornaOsoba={odgovornaOsoba}
-              setOdgovornaOsoba={setOdgovornaOsoba}
-              clanovi={clanovi}
-              handleMemberChange={handleMemberChange}
-              handleAddMember={handleAddMember}
-              maxClanovi={selectedSportData?.maxClanovi}
-              theme={theme}
-            />
-          )}
+  {step === 3 && selectedSportData && (
+    <TeamForm
+      nazivTima={nazivTima}
+      setNazivTima={setNazivTima}
+      odgovornaOsoba={odgovornaOsoba}
+      setOdgovornaOsoba={setOdgovornaOsoba}
+      clanovi={clanovi}
+      handleMemberChange={handleMemberChange}
+      handleAddMember={handleAddMember}
+      maxClanovi={selectedSportData.maxClanovi}
+      theme={theme}
+    />
+  )}
 
-          {/* Navigation Buttons */}
-          <div className="flex justify-between pt-8">
-            {step > 1 && (
-              <button
-                type="button"
-                onClick={prevStep}
-                style={theme.button}
-                className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
-              >
-                Natrag
-              </button>
-            )}
+  {/* Navigation Buttons */}
+  <div className="flex justify-between pt-8">
+    {step > 1 && (
+      <button
+        type="button"
+        onClick={prevStep}
+        style={theme.button}
+        className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
+      >
+        Natrag
+      </button>
+    )}
 
-            {step < 3 && (
-              <button
-                type="button"
-                onClick={nextStep}
-                style={{ ...theme.button, marginLeft: "auto" }}
-                className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
-              >
-                Dalje
-              </button>
-            )}
+    {step < 3 && (
+      <button
+        type="button"
+        onClick={nextStep}
+        disabled={
+          (step === 1 && !selectedDay) || (step === 2 && !sport)
+        }
+        style={{
+          ...theme.button,
+          marginLeft: "auto",
+          opacity:
+            (step === 1 && !selectedDay) || (step === 2 && !sport)
+              ? 0.5
+              : 1,
+          cursor:
+            (step === 1 && !selectedDay) || (step === 2 && !sport)
+              ? "not-allowed"
+              : "pointer",
+        }}
+        className="rounded-md px-5 py-2 font-semibold shadow-md transition"
+      >
+        Dalje
+      </button>
+    )}
 
-            {step === 3 && (
-              <button
-                
-                type="submit"
-                style={{ ...theme.button, marginLeft: "auto" }}
-                className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
-              >
-                Prijavi Tim
-              </button>
-            )}
-          </div>
-        </form>
+    {step === 3 && (
+      <button
+        type="submit"
+        style={{ ...theme.button, marginLeft: "auto" }}
+        className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
+      >
+        Prijavi Tim
+      </button>
+    )}
+  </div>
+</form>
+
 
         {/* Modal */}
         {showModal && selectedSportData && (
