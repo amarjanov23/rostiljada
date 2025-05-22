@@ -243,7 +243,8 @@ const App = ({ logo }) => {
         style={{ backgroundColor: theme.cardBg }}
         className="w-full max-w-3xl p-10 rounded-3xl shadow-lg"
       >
-        <StepIndicator step={step} theme={theme} />
+        <StepIndicator step={step} theme={theme} onStepClick={setStep} />
+
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {step === 1 && (

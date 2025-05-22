@@ -24,11 +24,11 @@ const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, the
       setCounts({});
       return;
     }
-
+  
     const fetchCounts = async () => {
       const noviCounts = {};
       const sportsKeys = Object.keys(sportsForDay);
-
+  
       await Promise.all(
         sportsKeys.map(async (key) => {
           try {
@@ -42,12 +42,14 @@ const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, the
           }
         })
       );
-
+  
       setCounts(noviCounts);
+      console.log("Counts fetched:", noviCounts);  // <-- Ovdje
     };
-
+  
     fetchCounts();
   }, [selectedDay, sportsForDay]);
+  
 
   // Funkcija za odabir sporta - ignorira ako je limit dosegnut
   const handleSelect = (value) => {

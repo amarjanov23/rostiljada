@@ -38,19 +38,21 @@ export const dan1Theme = {
 
 
 export const dan2Theme = {
-  bg: "#fff4e6", // topla bež/narandžasta pozadina
+  bg: "#f3f0fa", // zagasita svijetloljubičasta pozadina
   bgOverlay: "#ffffff",
-  label: { color: "#cc5803" }, // kontrastna narandžasta
+  label: { color: "#7b2cbf" }, // tamnija ljubičasta za tekst
   cardBg: "#ffffff",
   button: {
-    backgroundColor: "#cc5803", // jaka narandžasta
+    backgroundColor: "#7b2cbf", // tamnija ljubičasta
     color: "#ffffff",
-    border: "2px solid #ffd6a5", // svijetla narandžasta
+    border: "2px solid #c19ee0", // zagasit svijetloljubičasti obrub
   },
-  stepCompleted: "#ffd6a5",
-  stepCurrent: "#cc5803",
-  stepUpcoming: "#ffe8cc",
+  stepCompleted: "#cdb4db", // ugodna pastel-ljubičasta
+  stepCurrent: "#7b2cbf", // ista kao button za konzistentnost
+  stepUpcoming: "#e9d8fd", // nježno ljubičasta
   stepTextColor: "#ffffff",
-  stepLabelCurrent: "text-[#cc5803] font-bold",
+  stepLabelCurrent: "text-[#7b2cbf] font-bold",
   stepLabelUpcoming: "text-gray-400",
 };
+
+

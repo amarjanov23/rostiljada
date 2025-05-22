@@ -58,6 +58,15 @@ const Footer = ({ theme }) => {
             />
           ))}
         </div>
+        <div className="flex flex-wrap justify-center items-center gap-4 pt-4 border-t border-gray-300 w-full">
+  <a
+    href="mailto:adam.marjanovic2@gmail.com"
+    className="text-sm text-center md:text-left text-blue-600 hover:underline"
+  >
+    Korisnička podrška: adam.marjanovic2@gmail.com
+  </a>
+</div>
+
       </div>
     </footer>
   );
