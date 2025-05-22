@@ -49,11 +49,11 @@ const sportsData = {
       opis: "Prijave nisu preko naše stranice."
     },
     "Alka": {
-      voditelj: "Adam Marjanović (Beta pomoć)",
+      voditelj: "Adam Marjanović/Beta",
       vrijeme: "20:00-20:30",
       lokacija: "Studentski dom – između tribina",
-      maxClanovi: 2,
-      maxTimovi: 12,
+      maxClanovi: "",
+      maxTimovi: "",
       opis: "Prijave na licu mjesta."
     },
     "Košarka": {

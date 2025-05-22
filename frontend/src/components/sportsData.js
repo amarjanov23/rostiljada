@@ -8,14 +8,13 @@ const sportsData = {
       maxTimovi: 16,
       opis: "1-na-1 turnir u eliminacijskom format."
     },
-
     "Turnir u beli": {
       voditelj: "Lorna Zbodulja",
       vrijeme: "16:00h-20:00h, nastavak idući dan na Dravi",
       lokacija: "Studentski dom – terase/kuhinje/tribine",
       maxClanovi: 2,
       maxTimovi: 32,
-      opis: "Igra se u parovima, dva puta do 501. Eliminacijski sistem. VAŽNO: Potrebno donijeti vlastite karte"
+      opis: "Igra se u parovima, dva puta do 501. Eliminacijski sistem. Potrebno donijeti vlastite karte"
     },
     "Turnir u trešeti": {
       voditelj: "Ivan Račan",
@@ -23,7 +22,7 @@ const sportsData = {
       lokacija: "Studentski dom – terase/kuhinje/tribine",
       maxClanovi: 2,
       maxTimovi: 12,  // ovo možeš potvrditi kasnije
-      opis: "Igra u parovima. Klasični turnirski format s eliminacijom. VAŽNO: Potrebno donijeti vlastite karte"
+      opis: "Igra u parovima. Klasični turnirski format s eliminacijom. Potrebno donijeti vlastite karte"
     },
     "Alias": {
       voditelj: "Larija Jukić",
@@ -50,11 +49,11 @@ const sportsData = {
       opis: "Prijave nisu preko naše stranice."
     },
     "Alka": {
-      voditelj: "Adam Marjanović (Beta pomoć)",
+      voditelj: "Adam Marjanović/Beta",
       vrijeme: "20:00-20:30",
       lokacija: "Studentski dom – između tribina",
-      maxClanovi: 2,
-      maxTimovi: 12,
+      maxClanovi: "",
+      maxTimovi: "",
       opis: "Prijave na licu mjesta."
     },
     "Košarka": {
@@ -70,7 +69,7 @@ const sportsData = {
       vrijeme: "16:00h",
       lokacija: "Studentski dom – dvorište",
       maxClanovi: 2,
-      maxTimovi: 16,
+      maxTimovi: 12,
       opis: "Klasični 2-na-2 beer pong. Svaka runda do 15 minuta."
     },
     "Cageball": {
@@ -124,7 +123,7 @@ const sportsData = {
       maxTimovi: 12,
       opis: ""
     },
-   
+
     "Obaranje ruku": {
       voditelj: "Luka Krznarić",
       vrijeme: "17:00h",
