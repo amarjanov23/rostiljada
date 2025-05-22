@@ -1,4 +1,12 @@
 import logo from '../assets/icon.png';
+import logo1 from '../assets/logo1.png';
+import logo2 from '../assets/logo2.avif';
+import logo3 from '../assets/logo3.jpg';
+import logo4 from '../assets/logo4.png';
+import logo5 from '../assets/logo5.jpg';
+import logo6 from '../assets/logo6.jpeg';
+import logo7 from '../assets/logo7.png';
+
 
 const IntroOverlay = ({ theme, fadeOut, onClick }) => (
   <div
@@ -32,6 +40,17 @@ const IntroOverlay = ({ theme, fadeOut, onClick }) => (
       <p className="mt-6 text-sm opacity-70" style={theme.label}>
         Klikni bilo gdje za nastavak
       </p>
+      <div className="flex flex-wrap justify-center items-center gap-4 mt-8">
+  {[logo1, logo2, logo3, logo4, logo5, logo6, logo7].map((img, index) => (
+    <img
+      key={index}
+      src={img}
+      alt={`Logo ${index + 1}`}
+      className="h-12 md:h-16 object-contain"
+    />
+  ))}
+</div>
+
     </div>
   </div>
 );

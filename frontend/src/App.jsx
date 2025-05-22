@@ -138,7 +138,7 @@ const App = ({ logo }) => {
       const timer = setTimeout(() => {
         setIntroFadeOut(true);
         setTimeout(() => setIntroVisible(false), 700);
-      }, 1650);
+      }, 2500);
       return () => clearTimeout(timer);
     }
   }, [introVisible]);

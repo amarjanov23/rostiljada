@@ -1,4 +1,6 @@
 import { useLocation } from "react-router-dom";
+import briskulaImg from '../assets/briskula.png';
+
 
 import {
   defaultTheme,
@@ -92,6 +94,17 @@ const SuccessPage = () => {
         </div>
 
         <div className="mt-8 text-center">
+          {/* Briškula slika ako je izabran taj sport */}
+{state.sport === "Turnir u trešeti" && (
+  <div className="mt-6 text-center">
+    <img
+      src={briskulaImg}
+      alt="Briškula"
+      className="mx-auto w-64 md:w-80 rounded-lg shadow-lg"
+    />
+  </div>
+)}
+
           <a
             href="/"
             style={{

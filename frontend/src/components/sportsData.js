@@ -8,14 +8,14 @@ const sportsData = {
       maxTimovi: 16,
       opis: "1-na-1 turnir u eliminacijskom format."
     },
-  
+
     "Turnir u beli": {
       voditelj: "Lorna Zbodulja",
       vrijeme: "16:00h-20:00h, nastavak idući dan na Dravi",
       lokacija: "Studentski dom – terase/kuhinje/tribine",
       maxClanovi: 2,
       maxTimovi: 32,
-      opis: "Igra se u parovima, dva puta do 501. Eliminacijski sistem."
+      opis: "Igra se u parovima, dva puta do 501. Eliminacijski sistem. VAŽNO: Potrebno donijeti vlastite karte"
     },
     "Turnir u trešeti": {
       voditelj: "Ivan Račan",
@@ -23,7 +23,7 @@ const sportsData = {
       lokacija: "Studentski dom – terase/kuhinje/tribine",
       maxClanovi: 2,
       maxTimovi: 12,  // ovo možeš potvrditi kasnije
-      opis: "Igra u parovima. Klasični turnirski format s eliminacijom."
+      opis: "Igra u parovima. Klasični turnirski format s eliminacijom. VAŽNO: Potrebno donijeti vlastite karte"
     },
     "Alias": {
       voditelj: "Larija Jukić",
@@ -70,7 +70,7 @@ const sportsData = {
       vrijeme: "16:00h",
       lokacija: "Studentski dom – dvorište",
       maxClanovi: 2,
-      maxTimovi: 12,
+      maxTimovi: 16,
       opis: "Klasični 2-na-2 beer pong. Svaka runda do 15 minuta."
     },
     "Cageball": {
@@ -102,7 +102,7 @@ const sportsData = {
   "Dan 2": {
     "Odbojka": {
       voditelj: "Manuel Mathis",
-      vrijeme: "15:00h",
+      vrijeme: "16:00h",
       lokacija: "Gradsko kupalište – Pješčani teren",
       maxClanovi: 4,
       maxTimovi: 7,
@@ -124,22 +124,7 @@ const sportsData = {
       maxTimovi: 12,
       opis: ""
     },
-    "Gađanje limenki s vodenim balonima": {
-      voditelj: "",
-      vrijeme: "16:00h",
-      lokacija: "Gradsko kupalište",
-      maxClanovi: 1,
-      maxTimovi: 8,
-      opis: ""
-    },
-    "Treasure hunt": {
-      voditelj: "Manuel Mathis",
-      vrijeme: "15:00h",
-      lokacija: "Gradsko kupalište",
-      maxClanovi: 4,
-      maxTimovi: 10,
-      opis: ""
-    },
+   
     "Obaranje ruku": {
       voditelj: "Luka Krznarić",
       vrijeme: "17:00h",
