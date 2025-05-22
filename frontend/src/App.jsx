@@ -28,6 +28,8 @@ const App = ({ logo }) => {
   const [introVisible, setIntroVisible] = useState(true);
   const [introFadeOut, setIntroFadeOut] = useState(false);
   const [brojPrijava, setBrojPrijava] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -89,11 +91,12 @@ const App = ({ logo }) => {
       return;
     }
 
-    // Provjeri limit prije slanja
     if (brojPrijava >= (selectedSportData?.maxTimovi || Infinity)) {
       alert("Za ovaj sport su prijave zatvorene.");
       return;
     }
+
+    setIsSubmitting(true);  // <-- Start loading overlay
 
     try {
       const baseURL = import.meta.env.VITE_API_BASE_URL;
@@ -111,8 +114,11 @@ const App = ({ logo }) => {
     } catch (error) {
       console.error("Greška pri registraciji:", error);
       alert("Došlo je do greške prilikom registracije.");
+    } finally {
+      setIsSubmitting(false); // <-- Stop loading overlay
     }
   };
+
 
   const handleMemberChange = (index, e) => {
     const newClanovi = [...clanovi];
@@ -154,10 +160,61 @@ const App = ({ logo }) => {
     clanovi.every((clan) => clan.trim() !== "");
 
   return (
+
     <div
       style={{ backgroundColor: theme.bg, color: theme.label.color }}
       className="flex flex-col items-center min-h-screen p-6 transition-colors duration-500"
     >
+      {isSubmitting && (
+  <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      backgroundColor: theme.bg, 
+      color: theme.label.color,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 9999,
+    }}
+  >
+    {/* Spinner */}
+    <div
+      style={{
+        border: "8px solid",
+        border: theme.label,
+        color: theme.label,
+        borderTop: "8px solid white",
+        borderRadius: "50%",
+        width: "60px",
+        height: "60px",
+        animation: "spin 1s linear infinite",
+        marginBottom: "20px",
+      }}
+    ></div>
+
+    {/* Tekst */}
+    <div style={{ color: theme.label, fontSize: "1.5rem", fontWeight: "600" }}>
+      Prijava u tijeku, molimo pričekajte...
+    </div>
+
+    {/* Animacija keyframes u style tag */}
+    <style>
+      {`
+        @keyframes spin {
+          0% { transform: rotate(0deg);}
+          100% { transform: rotate(360deg);}
+        }
+      `}
+    </style>
+  </div>
+)}
+
+
       {introVisible && (
         <IntroOverlay
           logo={logo}
@@ -259,17 +316,22 @@ const App = ({ logo }) => {
             {step === 3 && (
               <button
                 type="submit"
-                disabled={prijaveZatvorene || !isTeamFormValid}
+                disabled={prijaveZatvorene || !isTeamFormValid || isSubmitting}
                 style={{
                   ...theme.button,
                   marginLeft: "auto",
-                  opacity: prijaveZatvorene || !isTeamFormValid ? 0.5 : 1,
-                  cursor: prijaveZatvorene || !isTeamFormValid ? "not-allowed" : "pointer",
+                  opacity: prijaveZatvorene || !isTeamFormValid || isSubmitting ? 0.5 : 1,
+                  cursor: prijaveZatvorene || !isTeamFormValid || isSubmitting ? "not-allowed" : "pointer",
                 }}
                 className="cursor-pointer rounded-md px-5 py-2 font-semibold shadow-md hover:brightness-90 transition"
               >
-                {prijaveZatvorene ? "Prijave zatvorene" : "Prijavi Tim"}
+                {prijaveZatvorene
+                  ? "Prijave zatvorene"
+                  : isSubmitting
+                    ? "Prijava u tijeku..."
+                    : "Prijavi Tim"}
               </button>
+
             )}
           </div>
         </form>
