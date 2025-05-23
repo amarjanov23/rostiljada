@@ -32,14 +32,6 @@ const sportsData = {
       maxTimovi: 8,
       opis: ""
     },
-    "Alka": {
-      voditelj: "Adam Marjanović/Beta",
-      vrijeme: "20:00-20:30",
-      lokacija: "Studentski dom – između tribina",
-      maxClanovi: "",
-      maxTimovi: "",
-      opis: "Prijave na licu mjesta."
-    },
     "Košarka": {
       voditelj: "Nimaj Dupanović",
       vrijeme: "15:00-17:00h",
@@ -81,7 +73,7 @@ const sportsData = {
       vrijeme: "16:00h",
       lokacija: "Gradsko kupalište – Pješčani teren",
       maxClanovi: 4,
-      maxTimovi: 7,
+      maxTimovi: 8,
       opis: "3 + 1 zamjena (min. jedna cura na terenu). Kup-sustav."
     },
     "Skakanje u vrećama": {
@@ -115,7 +107,7 @@ const sportsData = {
       lokacija: "Gradsko kupalište - bazeni",
       maxClanovi: "Individualna igra",
       maxTimovi: "",
-      opis: "Tko je vukodlak među nama? Igra otkrivanja ubojice. P"
+      opis: "Prijave na licu mjesta. Tko je vukodlak među nama? Igra otkrivanja ubojice. P"
     }
   }
 };

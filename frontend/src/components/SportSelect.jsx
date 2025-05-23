@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+
 import axios from "axios";
 
 const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, theme }) => {
@@ -32,7 +33,7 @@ const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, the
       await Promise.all(
         sportsKeys.map(async (key) => {
           try {
-            const res = await axios.get("/api/teams/count", {
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/teams/count`, {
               params: { dan: selectedDay, sport: key },
             });
             noviCounts[key] = res.data.count || 0;

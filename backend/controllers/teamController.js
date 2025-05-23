@@ -4,17 +4,25 @@ const sportsData = require('../data/sportsData');
 // Definicija funkcije getTeamsCount
 const getTeamsCount = async (req, res) => {
   const { dan, sport } = req.query;
+  console.log("Query params:", req.query);
+
   if (!dan || !sport) {
     return res.status(400).json({ message: 'Nedostaju parametri dan i sport' });
   }
 
   try {
-    const count = await TeamModel.countDocuments({ dan, sport });
+    const count = await TeamModel.countDocuments({
+      dan: { $regex: `^${dan.trim()}$`, $options: 'i' },
+      sport: { $regex: `^${sport.trim()}$`, $options: 'i' }
+    });
+
+    console.log(`Brojim za dan: "${dan}", sport: "${sport}" — pronađeno: ${count}`);
     res.json({ count });
   } catch (error) {
     res.status(500).json({ message: 'Greška pri brojanju timova', error: error.message });
   }
 };
+
 
 // Definicija funkcije registerTeam
 const registerTeam = async (req, res) => {
@@ -30,7 +38,11 @@ const registerTeam = async (req, res) => {
       return res.status(400).json({ message: `Maksimalan broj članova po timu je ${sportInfo.maxClanovi}` });
     }
 
-    const count = await TeamModel.countDocuments({ dan, sport });
+    const count = await TeamModel.countDocuments({
+      dan: { $regex: `^${dan.trim()}$`, $options: 'i' },
+      sport: { $regex: `^${sport.trim()}$`, $options: 'i' }
+    });
+    
     if (count >= sportInfo.maxTimovi) {
       return res.status(400).json({ message: 'Dostignut je maksimalan broj timova za ovaj sport' });
     }
