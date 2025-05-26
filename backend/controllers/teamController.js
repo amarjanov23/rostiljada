@@ -3,17 +3,16 @@ const sportsData = require('../data/sportsData');
 
 // Definicija funkcije getTeamsCount
 const getTeamsCount = async (req, res) => {
-  const { dan, sport } = req.query;
-  console.log("Query params:", req.query);
+  let { dan, sport } = req.query;
+  dan = dan.trim();
+  sport = sport.trim();
 
-  if (!dan || !sport) {
-    return res.status(400).json({ message: 'Nedostaju parametri dan i sport' });
-  }
+  console.log("Query params:", { dan, sport });
 
   try {
     const count = await TeamModel.countDocuments({
-      dan: { $regex: `^${dan.trim()}$`, $options: 'i' },
-      sport: { $regex: `^${sport.trim()}$`, $options: 'i' }
+      dan: { $regex: dan, $options: 'i' },   // traži dan koji sadrži traženi string, case-insensitive
+      sport: { $regex: sport, $options: 'i' } // isto za sport
     });
 
     console.log(`Brojim za dan: "${dan}", sport: "${sport}" — pronađeno: ${count}`);
@@ -22,6 +21,7 @@ const getTeamsCount = async (req, res) => {
     res.status(500).json({ message: 'Greška pri brojanju timova', error: error.message });
   }
 };
+
 
 
 // Definicija funkcije registerTeam

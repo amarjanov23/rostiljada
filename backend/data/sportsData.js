@@ -69,7 +69,7 @@ const sportsData = {
       vrijeme: "16:00h",
       lokacija: "Studentski dom – dvorište",
       maxClanovi: 2,
-      maxTimovi: 12,
+      maxTimovi: 16,
       opis: "Klasični 2-na-2 beer pong. Svaka runda do 15 minuta."
     },
     "Cageball": {

@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-
 import axios from "axios";
 
 const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, theme }) => {
   const sportsForDay = sportsData?.[selectedDay] || {};
-  const [counts, setCounts] = useState({}); // brojevi prijava po sportu
+  const [counts, setCounts] = useState({});
   const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
 
-  // Zatvori dropdown kad klikneš van
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -19,17 +17,16 @@ const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, the
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Dohvati broj prijavljenih timova za svaki sport u odabranom danu
   useEffect(() => {
     if (!selectedDay) {
       setCounts({});
       return;
     }
-  
+
     const fetchCounts = async () => {
       const noviCounts = {};
       const sportsKeys = Object.keys(sportsForDay);
-  
+
       await Promise.all(
         sportsKeys.map(async (key) => {
           try {
@@ -43,21 +40,16 @@ const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, the
           }
         })
       );
-  
+
       setCounts(noviCounts);
-      console.log("Counts fetched:", noviCounts);  // <-- Ovdje
     };
-  
+
     fetchCounts();
   }, [selectedDay, sportsForDay]);
-  
 
-  // Funkcija za odabir sporta - ignorira ako je limit dosegnut
   const handleSelect = (value) => {
-    if (counts[value] >= (sportsForDay[value]?.maxTimovi || Infinity)) {
-      // sport je popunjen - ne dozvoli odabir
-      return;
-    }
+    const isFull = counts[value] >= (sportsForDay[value]?.maxTimovi || Infinity);
+    if (isFull) return;
     setSport(value);
     setClanovi([]);
     setOpen(false);
@@ -94,7 +86,12 @@ const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, the
           stroke="currentColor"
           strokeWidth="2"
           viewBox="0 0 24 24"
-          style={{ width: "20px", height: "20px", transition: "transform 0.3s", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+          style={{
+            width: "20px",
+            height: "20px",
+            transition: "transform 0.3s",
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+          }}
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
@@ -128,7 +125,9 @@ const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, the
             </li>
           )}
           {Object.entries(sportsForDay).map(([key]) => {
-            const isFull = counts[key] >= (sportsForDay[key].maxTimovi || Infinity);
+            const isFull = counts[key] >= (sportsForDay[key]?.maxTimovi || Infinity);
+            const label = isFull ? `${key} (Popunjeno)` : key;
+
             return (
               <li
                 key={key}
@@ -142,11 +141,10 @@ const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, the
                   color: isFull ? "#999" : sport === key ? theme.button.color : theme.label.color,
                   fontWeight: sport === key ? "600" : "normal",
                   userSelect: "none",
-                  position: "relative",
                 }}
                 title={isFull ? "Prijave za ovaj sport su zatvorene" : ""}
               >
-                {key} {isFull && "(Popunjeno)"}
+                {label}
               </li>
             );
           })}
@@ -163,7 +161,9 @@ const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, the
           <p><strong>Vrijeme:</strong> {sportsForDay[sport].vrijeme || "N/A"}</p>
           <p><strong>Maks. članova po timu:</strong> {sportsForDay[sport].maxClanovi}</p>
           <p><strong>Maks. timova:</strong> {sportsForDay[sport].maxTimovi}</p>
-          {sportsForDay[sport].opis && <p><strong>Kratki opis:</strong> {sportsForDay[sport].opis}</p>}
+          {sportsForDay[sport].opis && (
+            <p><strong>Kratki opis:</strong> {sportsForDay[sport].opis}</p>
+          )}
         </div>
       )}
     </div>

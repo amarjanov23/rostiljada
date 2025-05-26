@@ -166,53 +166,53 @@ const App = ({ logo }) => {
       className="flex flex-col items-center min-h-screen p-6 transition-colors duration-500"
     >
       {isSubmitting && (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100vw",
-      height: "100vh",
-      backgroundColor: theme.bg, 
-      color: theme.label.color,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 9999,
-    }}
-  >
-    {/* Spinner */}
-    <div
-      style={{
-        border: "8px solid",
-        border: theme.label,
-        color: theme.label,
-        borderTop: "8px solid white",
-        borderRadius: "50%",
-        width: "60px",
-        height: "60px",
-        animation: "spin 1s linear infinite",
-        marginBottom: "20px",
-      }}
-    ></div>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: theme.bg,
+            color: theme.label.color,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          {/* Spinner */}
+          <div
+            style={{
+              border: "8px solid",
+              border: theme.label,
+              color: theme.label,
+              borderTop: "8px solid white",
+              borderRadius: "50%",
+              width: "60px",
+              height: "60px",
+              animation: "spin 1s linear infinite",
+              marginBottom: "20px",
+            }}
+          ></div>
 
-    {/* Tekst */}
-    <div style={{ color: theme.label, fontSize: "1.5rem", fontWeight: "600" }}>
-      Prijava u tijeku, molimo pričekajte...
-    </div>
+          {/* Tekst */}
+          <div style={{ color: theme.label, fontSize: "1.5rem", fontWeight: "600" }}>
+            Prijava u tijeku, molimo pričekajte...
+          </div>
 
-    {/* Animacija keyframes u style tag */}
-    <style>
-      {`
+          {/* Animacija keyframes u style tag */}
+          <style>
+            {`
         @keyframes spin {
           0% { transform: rotate(0deg);}
           100% { transform: rotate(360deg);}
         }
       `}
-    </style>
-  </div>
-)}
+          </style>
+        </div>
+      )}
 
 
       {introVisible && (
