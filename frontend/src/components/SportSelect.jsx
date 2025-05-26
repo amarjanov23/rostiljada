@@ -151,21 +151,29 @@ const SportSelect = ({ selectedDay, sport, setSport, setClanovi, sportsData, the
         </ul>
       )}
 
-      {sport && sportsForDay[sport] && (
-        <div
-          className="mt-4 p-4 rounded-lg shadow-md text-sm space-y-1"
-          style={{ backgroundColor: theme.bgOverlay, color: theme.label.color }}
-        >
-          <p><strong>Voditelj:</strong> {sportsForDay[sport].voditelj || "N/A"}</p>
-          <p><strong>Lokacija:</strong> {sportsForDay[sport].lokacija || "N/A"}</p>
-          <p><strong>Vrijeme:</strong> {sportsForDay[sport].vrijeme || "N/A"}</p>
-          <p><strong>Maks. članova po timu:</strong> {sportsForDay[sport].maxClanovi}</p>
-          <p><strong>Maks. timova:</strong> {sportsForDay[sport].maxTimovi}</p>
-          {sportsForDay[sport].opis && (
-            <p><strong>Kratki opis:</strong> {sportsForDay[sport].opis}</p>
-          )}
-        </div>
-      )}
+{sport && sportsForDay[sport] && (
+  <div
+    className="mt-4 p-4 rounded-lg shadow-md text-sm space-y-1"
+    style={{ backgroundColor: theme.bgOverlay, color: theme.label.color }}
+  >
+    <p><strong>Voditelj:</strong> {sportsForDay[sport].voditelj || "N/A"}</p>
+    <p><strong>Lokacija:</strong> {sportsForDay[sport].lokacija || "N/A"}</p>
+    <p><strong>Vrijeme:</strong> {sportsForDay[sport].vrijeme || "N/A"}</p>
+    <p><strong>Maks. članova po timu:</strong> {sportsForDay[sport].maxClanovi}</p>
+    <p><strong>Maks. timova:</strong> {sportsForDay[sport].maxTimovi}</p>
+    {sportsForDay[sport].opis && (
+      <p><strong>Kratki opis:</strong> {sportsForDay[sport].opis}</p>
+    )}
+
+    {/* OVO JE NOVI DIO */}
+    {counts[sport] >= sportsForDay[sport]?.maxTimovi && (
+      <div className="mt-2 text-red-600 font-semibold">
+        Prijave za ovaj sport su zatvorene.
+      </div>
+    )}
+  </div>
+)}
+
     </div>
   );
 };

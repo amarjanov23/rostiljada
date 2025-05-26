@@ -45,7 +45,7 @@ const sportsData = {
       vrijeme: "16:00h",
       lokacija: "Studentski dom – dvorište",
       maxClanovi: 2,
-      maxTimovi: 16,
+      maxTimovi: 12,
       opis: "Klasični 2-na-2 beer pong. Svaka runda do 15 minuta."
     },
     "Cageball": {
@@ -73,7 +73,7 @@ const sportsData = {
       vrijeme: "16:00h",
       lokacija: "Gradsko kupalište – Pješčani teren",
       maxClanovi: 4,
-      maxTimovi: 8,
+      maxTimovi: 7,
       opis: "3 + 1 zamjena (min. jedna cura na terenu). Kup-sustav."
     },
     "Skakanje u vrećama": {
@@ -101,14 +101,7 @@ const sportsData = {
       maxTimovi: 10,
       opis: ""
     },
-    "Vukodlaci": {
-      voditelj: "Beta",
-      vrijeme: "17:00h",
-      lokacija: "Gradsko kupalište - bazeni",
-      maxClanovi: "Individualna igra",
-      maxTimovi: "",
-      opis: "Prijave na licu mjesta. Tko je vukodlak među nama? Igra otkrivanja ubojice. P"
-    }
+
   }
 };
 

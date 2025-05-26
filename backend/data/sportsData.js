@@ -32,30 +32,6 @@ const sportsData = {
       maxTimovi: 8,
       opis: ""
     },
-    "Bench Press": {
-      voditelj: "Niko Rastija, Matea Kucljak",
-      vrijeme: "16:00h-19:00",
-      lokacija: "Studentski dom – Teretana ili vani",
-      maxClanovi: 1,
-      maxTimovi: 25,
-      opis: "Prijave nisu preko naše stranice."
-    },
-    "Biceps curl": {
-      voditelj: "Niko Rastija, Matea Kucljak",
-      vrijeme: "18:00h",
-      lokacija: "Studentski dom – Teretana/vani",
-      maxClanovi: 1,
-      maxTimovi: 20,
-      opis: "Prijave nisu preko naše stranice."
-    },
-    "Alka": {
-      voditelj: "Adam Marjanović/Beta",
-      vrijeme: "20:00-20:30",
-      lokacija: "Studentski dom – između tribina",
-      maxClanovi: "",
-      maxTimovi: "",
-      opis: "Prijave na licu mjesta."
-    },
     "Košarka": {
       voditelj: "Nimaj Dupanović",
       vrijeme: "15:00-17:00h",
@@ -88,20 +64,13 @@ const sportsData = {
       maxTimovi: 16,
       opis: ""
     },
-    "Vukodlaci": {
-      voditelj: "Elizabeta Rengel",
-      vrijeme: "17:00h",
-      lokacija: "Studentski dom – Klub",
-      maxClanovi: 6,
-      maxTimovi: 10,
-      opis: "Tko je vukodlak među nama? Igra otkrivanja ubojice."
-    }
+   
   },
 
   "Dan 2": {
     "Odbojka": {
       voditelj: "Manuel Mathis",
-      vrijeme: "15:00h",
+      vrijeme: "16:00h",
       lokacija: "Gradsko kupalište – Pješčani teren",
       maxClanovi: 4,
       maxTimovi: 7,
@@ -131,8 +100,10 @@ const sportsData = {
       maxClanovi: 2,
       maxTimovi: 10,
       opis: ""
-    }
+    },
   }
 };
 
+
 module.exports = sportsData;
+

@@ -7,15 +7,12 @@ const getTeamsCount = async (req, res) => {
   dan = dan.trim();
   sport = sport.trim();
 
-  console.log("Query params:", { dan, sport });
-
   try {
     const count = await TeamModel.countDocuments({
       dan: { $regex: dan, $options: 'i' },   // traži dan koji sadrži traženi string, case-insensitive
       sport: { $regex: sport, $options: 'i' } // isto za sport
     });
 
-    console.log(`Brojim za dan: "${dan}", sport: "${sport}" — pronađeno: ${count}`);
     res.json({ count });
   } catch (error) {
     res.status(500).json({ message: 'Greška pri brojanju timova', error: error.message });

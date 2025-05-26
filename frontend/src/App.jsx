@@ -62,7 +62,7 @@ const App = ({ logo }) => {
     const fetchBrojPrijava = async () => {
       if (selectedDay && sport) {
         try {
-          const baseURL = import.meta.env.VITE_API_BASE_URL;
+          const baseURL = import.meta.env.VITE_API_URL;
           const res = await axios.get(`${baseURL}/api/teams/count`, {
             params: { dan: selectedDay, sport },
           });
@@ -99,7 +99,7 @@ const App = ({ logo }) => {
     setIsSubmitting(true);  // <-- Start loading overlay
 
     try {
-      const baseURL = import.meta.env.VITE_API_BASE_URL;
+      const baseURL = import.meta.env.VITE_API_URL;
       await axios.post(`${baseURL}/api/teams/register`, {
         dan: selectedDay,
         sport,
@@ -260,15 +260,17 @@ const App = ({ logo }) => {
 
           {step === 2 && selectedDay && (
             <SportSelect
-              selectedDay={selectedDay}
-              sport={sport}
-              setSport={setSport}
-              setClanovi={setClanovi}
-              sportsData={sportsData}
-              selectedSportData={selectedSportData}
-              setShowModal={setShowModal}
-              theme={theme}
-            />
+            selectedDay={selectedDay}
+            sport={sport}
+            setSport={setSport}
+            setClanovi={setClanovi}
+            sportsData={sportsData}
+            selectedSportData={selectedSportData}
+            setShowModal={setShowModal}
+            theme={theme}
+            brojPrijava={brojPrijava}
+          />
+          
           )}
 
           {step === 3 && selectedSportData && (
