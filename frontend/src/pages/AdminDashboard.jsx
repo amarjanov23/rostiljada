@@ -34,7 +34,7 @@ export default function AdminDashboard() {
     setLoading(true);
     setError(null);
 
-    const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const baseURL = import.meta.env.VITE_API_URL;
 
     axios.get(`${baseURL}/api/teams`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -56,7 +56,7 @@ export default function AdminDashboard() {
 
   const handleDelete = (id) => {
     if (confirm('Jesi siguran da želiš obrisati tim?')) {
-      axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/teams/${id}`, {
+      axios.delete(`${import.meta.env.VITE_API_URL}/api/teams/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then(() => setTeams((prev) => prev.filter((t) => t._id !== id)))
@@ -69,7 +69,7 @@ export default function AdminDashboard() {
   };
 
   const handleUpdate = (updatedTeam) => {
-    axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/teams/${updatedTeam._id}`, updatedTeam, {
+    axios.put(`${import.meta.env.VITE_API_URL}/api/teams/${updatedTeam._id}`, updatedTeam, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(() => {
